@@ -46,7 +46,7 @@ app.get('/weather',(req,res) => {
 // const city_name = req.query.searchQuery
 const{searchQuery, lat, lon} = req.query
 const weather = data.find(city => city.city_name.toLowerCase() === searchQuery.toLowerCase())
- res.send(weather.data.map(a => new Forecast(a.datetime, a.high_temp, a.low_temp, a.weather.description)))
+    res.send(weather.data.map(item => new Forecast(item.datetime, item.high_temp, item.low_temp, item.weather.description)))
 });
 
 // Catch all endpoints
