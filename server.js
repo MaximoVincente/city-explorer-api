@@ -13,6 +13,12 @@ const cors = require('cors');
 
 //load data
 const data = require('./weather.json');
+
+//load API Data  
+const axios = require('axios');
+
+const {response} = require('express');
+
 //Start our server
 const app = express();
 
@@ -27,26 +33,36 @@ const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => console.log(`Listening on PORT ${PORT}`));
 
 
-// Endpoints:
+
 //--------------------------
-
-
-class Forecast {
-    constructor(date, hight, lowt, desc){
-        this.description = `Low of ${lowt}, high of ${hight} with ${desc}`
-        this.date = date;
+app.get('/weather', getForecast);
+async function getForecast(req, res) {
+    const searchQuery = req.query.searchQuery; 
+    const url = `https://api.weatherbit.io/v2.0/forecast/daily?city=${searchQuery}&key=${process.env.WEATHER_API_KEY}`;
+    try {
+        const forecastRes = await axios.get(url);
+        const weatherData = forecastRes.data.data.map(weather => new Forecast(weather));
+        res.status(200).send(weatherData);
+    } catch (error) {
+        res.status(500).send(`server error ${error}`);
     }
 }
 
-app.get("/", (req, res) => {
-    res.send('Hello from the home route!');
-});
+class Forecast {
+    constructor(obj){
+        this.highTemp = obj.high_temp;
+        this.lowTemp = obj.low_temp;
+        this.desc = obj.weather.description;
+        this.time = obj.valid_date
+    }
+}
 
-app.get('/weather',(req,res) => {
-// const city_name = req.query.searchQuery
-const{searchQuery, lat, lon} = req.query
-const weather = data.find(city => city.city_name.toLowerCase() === searchQuery.toLowerCase())
-    res.send(weather.data.map(item => new Forecast(item.datetime, item.high_temp, item.low_temp, item.weather.description)))
+
+
+// Endpoints:
+app.get("/", (req, res) => {
+    // sends a response
+    res.send("Hello from the home route! again!");
 });
 
 // Catch all endpoints
@@ -54,4 +70,3 @@ const weather = data.find(city => city.city_name.toLowerCase() === searchQuery.t
 app.get('*', (req, res) => {
     res.status(404).send('Page not Found');
 });
-
