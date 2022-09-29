@@ -14,10 +14,15 @@ const cors = require('cors');
 //load data
 const data = require('./weather.json');
 
+
 //load API Data  
 const axios = require('axios');
 
 const {response} = require('express');
+
+//put relative file path with ./ at the beginning
+const getMovies = require('./modules/getMovies.js');
+const getForecast = require('./modules/getForecast.js');
 
 //Start our server
 const app = express();
@@ -35,52 +40,12 @@ app.listen(PORT, () => console.log(`Listening on PORT ${PORT}`));
 
 
 //--------------------------
+//getForecast.js
 app.get('/weather', getForecast);
-async function getForecast(req, res) {
-    const searchQuery = req.query.searchQuery; 
-    const url = `https://api.weatherbit.io/v2.0/forecast/daily?city=${searchQuery}&key=${process.env.WEATHER_API_KEY}`;
-    try {
-        const forecastRes = await axios.get(url);
-        const weatherData = forecastRes.data.data.map(weather => new Forecast(weather));
-        res.status(200).send(weatherData);
-    } catch (error) {
-        res.status(500).send(`server error ${error}`);
-    }
-}
 
-class Forecast {
-    constructor(obj){
-        this.highTemp = obj.high_temp;
-        this.lowTemp = obj.low_temp;
-        this.desc = obj.weather.description;
-        this.time = obj.valid_date
-    }
-}
-
+//getMovies.js
 app.get('/movie', getMovies);
-async function getMovies(req, res){
-    const searchQuery = req.query.searchQuery;
-    const url = `https://api.themoviedb.org/3/search/movie?query=${searchQuery}&api_key=${process.env.MOVIE_API_KEY}`;
-    try{
-        const movieRes = await axios.get(url);
-        const movieData = movieRes.data.results.map(movieC => new MovieC(movieC));
-        res.status(200).send(movieData);
-    } catch (error){
-        res.status(500).send(`server error ${error}`)
-    }
-}
 
-class MovieC {
-    constructor(obj){
-        this.title = obj.title;
-        this.overview = obj.overview;
-        this.vote_average = obj.vote_average;
-        this.vote_count = obj.vote_count;
-        this.poster_path = 'https://image.tmdb.org/t/p/w500'+ obj.poster_path;
-        this.popularity = obj.popularity;
-        this.release_date = obj.release_date;
-    }
-}
 
 
 // Endpoints:
