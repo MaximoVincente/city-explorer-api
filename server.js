@@ -76,7 +76,7 @@ class MovieC {
         this.overview = obj.overview;
         this.vote_average = obj.vote_average;
         this.vote_count = obj.vote_count;
-        this.poster_path = obj.poster_path;
+        this.poster_path = 'https://image.tmdb.org/t/p/w500'+ obj.poster_path;
         this.popularity = obj.popularity;
         this.release_date = obj.release_date;
     }
