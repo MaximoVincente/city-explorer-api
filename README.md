@@ -9,9 +9,9 @@ An application that can give us different type of information to any city in the
 
 ## Getting Started - Data Flow for City Explorer Web Request-Response Cycle
 
-![Data Flow](public/data-flow.jpg)
-![Data Flow for rendering weather data from express json file](public/data-flow2.jpg)
-![Data Flow for rendering weather and movie dats from an external API](public/data-flow3.jpg)
+![Data Flow](./images/data-flow.jpg)
+![Data Flow for rendering weather data from express json file](./images/data-flow2.jpg)
+![Data Flow for rendering weather and movie dats from an external API](./images/data-flow3.jpg)
 
 ## WRRC Outline of Functions
 
