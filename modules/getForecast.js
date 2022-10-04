@@ -12,7 +12,7 @@ async function getForecast(req, res) {
     try {
         const key = searchQuery + ' Weather';
         // If the key exist in cache AND is valid, then send THAT data from cache
-        if (cache[key] && (Date.now() - cache[key].timeStamp <  14400000)){
+        if (cache[key] && (Date.now() - cache[key].timeStamp <  1440000)){
             res.status(200).send(cache(key).data);
         }else{
             const forecastRes = await axios.get(url);

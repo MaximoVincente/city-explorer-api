@@ -12,7 +12,7 @@ async function getMovies(req, res) {
     try {
         const key = searchQuery + ' Movie';
         //If the key exist in cache AND is valid, the send THAT data from cache
-        if (cache[key] && (Date.now() - cache[key].timeStamp < 43200000)){
+        if (cache[key] && (Date.now() - cache[key].timeStamp < 4320000)){
             res.status(200).send(cache(key).data);
         }else{
             const movieRes = await axios.get(url);
